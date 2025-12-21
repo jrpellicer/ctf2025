@@ -1,0 +1,33 @@
+# Obtener código de equipo
+$ruta = "C:\Users\Administrador\Desktop\equipo.txt"
+$equipo = Get-Content -Path $ruta
+
+# Configurar notificaciones emergentes en Centro de Notificaciones
+Add-Type -AssemblyName System.Windows.Forms
+
+$notify = New-Object System.Windows.Forms.NotifyIcon
+$notify.Icon = [System.Drawing.SystemIcons]::Information
+
+# Reto 1. Unir el equipo al dominio
+
+$notify.BalloonTipTitle = "¡Bravo!"
+$notify.BalloonTipText = "¡¡¡ Reto 1 resuelto !!!"
+
+$carpeta = "C:\datos\prueba"
+
+$resuelto = $false
+
+while (-not $resuelto) {
+    if (Test-Path $carpeta) {
+        $resuelto = $true
+
+        $notify.Visible = $true
+        $notify.ShowBalloonTip(5000)
+        $pagina = "C:\scripts\reto2.html"
+
+        Start-Process "iexplore.exe" -ArgumentList "-new $pagina"
+        
+    }
+    
+    Start-Sleep -Seconds 15
+}

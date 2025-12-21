@@ -3,13 +3,13 @@
 # ==================================================
 
 # Datos de red
-$IP = "192.168.1.10"
+$IP = "192.168.10.25"
 $Prefijo = 24
-$Gateway = "192.168.1.1"
+$Gateway = "192.168.10.1"
 $DNS = @("127.0.0.1")
 
 # Nombre del equipo
-$NombreEquipo = "Galileo"
+$NombreEquipo = "SRV-25-DC01"
 
 # ==================================================
 # DETECTAR ADAPTADOR ACTIVO

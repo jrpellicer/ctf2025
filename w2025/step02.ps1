@@ -3,8 +3,8 @@
 # ==================================================
 
 # Dominio
-$Dominio = "cerezo.asir"
-$NetBIOS = "CEREZO"
+$Dominio = "asir.iescamp.es"
+$NetBIOS = "ASIR"
 
 # Contraseña DSRM (modo restauración)
 $DSRMPassword = ConvertTo-SecureString "qwe_123" -AsPlainText -Force
