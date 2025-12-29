@@ -9,8 +9,12 @@ USE ctf2025;
 CREATE TABLE competiciones (
     id INT AUTO_INCREMENT PRIMARY KEY,
     codigo VARCHAR(20) NOT NULL UNIQUE,
-    nombre VARCHAR(100) NOT NULL
+    nombre VARCHAR(100) NOT NULL,
+    fecha_inicio DATETIME NOT NULL,
+    fecha_fin DATETIME DEFAULT NULL,
+    activa TINYINT(1) NOT NULL DEFAULT 0
 );
+
 
 
 -- Crear tabla equipos

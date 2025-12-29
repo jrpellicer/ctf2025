@@ -3,6 +3,8 @@ require 'db.php';
 
 $competiciones = $pdo->query("SELECT * FROM competiciones")->fetchAll();
 
+$mensaje = null;
+
 if ($_POST) {
     $codigo_hex = strtoupper($_POST['codigo_hex']);
     $nombre     = $_POST['nombre'];
@@ -10,31 +12,59 @@ if ($_POST) {
 
     // Validar hex 6 chars
     if (!preg_match('/^[0-9A-F]{6}$/', $codigo_hex)) {
-        die("Código hexadecimal inválido");
+        $mensaje = "❌ Código hexadecimal inválido";
+    } else {
+        $stmt = $pdo->prepare(
+            "INSERT INTO equipos (codigo_hex, nombre, competicion_id)
+             VALUES (?, ?, ?)"
+        );
+        $stmt->execute([$codigo_hex, $nombre, $comp_id]);
+
+        $mensaje = "✅ Equipo creado correctamente";
     }
-
-    $stmt = $pdo->prepare(
-        "INSERT INTO equipos (codigo_hex, nombre, competicion_id)
-         VALUES (?, ?, ?)"
-    );
-    $stmt->execute([$codigo_hex, $nombre, $comp_id]);
-
-    echo "Equipo creado";
 }
 ?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Alta de equipos</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+    <div class="container small">
+        <h1>Alta de equipos</h1>
 
-<form method="post">
-    Código hex (6): <input name="codigo_hex" required><br>
-    Nombre equipo: <input name="nombre" required><br>
+        <?php if ($mensaje): ?>
+            <div class="alert">
+                <?= htmlspecialchars($mensaje) ?>
+            </div>
+        <?php endif; ?>
 
-    Competición:
-    <select name="competicion">
-        <?php foreach ($competiciones as $c): ?>
-            <option value="<?= $c['id'] ?>">
-                <?= htmlspecialchars($c['nombre']) ?>
-            </option>
-        <?php endforeach ?>
-    </select><br>
+        <form method="post" class="form-panel">
+            <label>
+                Código hexadecimal
+                <input name="codigo_hex" maxlength="6" placeholder="Ej: FA33DD" required>
+            </label>
 
-    <button>Crear equipo</button>
-</form>
+            <label>
+                Nombre del equipo
+                <input name="nombre" required>
+            </label>
+
+            <label>
+                Competición
+                <select name="competicion">
+                    <?php foreach ($competiciones as $c): ?>
+                        <option value="<?= $c['id'] ?>">
+                            <?= htmlspecialchars($c['nombre']) ?>
+                        </option>
+                    <?php endforeach ?>
+                </select>
+            </label>
+
+            <button type="submit">Crear equipo</button>
+        </form>
+    </div>
+</body>
+</html>
