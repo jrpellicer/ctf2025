@@ -1,5 +1,10 @@
+SET NAMES utf8mb4;
+SET CHARACTER SET utf8mb4;
+
 -- Crear la base de datos
-CREATE DATABASE IF NOT EXISTS ctf2025;
+CREATE DATABASE IF NOT EXISTS ctf2025
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_unicode_ci;
 
 -- Usar la base de datos creada
 USE ctf2025;
@@ -16,7 +21,6 @@ CREATE TABLE competiciones (
 );
 
 
-
 -- Crear tabla equipos
 
 CREATE TABLE equipos (
@@ -25,9 +29,11 @@ CREATE TABLE equipos (
     nombre VARCHAR(100) NOT NULL,
     competicion_id INT NOT NULL,
     puntos INT DEFAULT 0,
+    tiempo INT UNSIGNED DEFAULT NULL,
     UNIQUE (codigo_hex, competicion_id),
     FOREIGN KEY (competicion_id) REFERENCES competiciones(id)
 );
+
 
 -- Crear tabla retos
 
@@ -36,13 +42,57 @@ CREATE TABLE retos (
     codigo_hex CHAR(2) NOT NULL,
     nombre VARCHAR(100) NOT NULL,
     puntos INT DEFAULT 0,
+    descripcion TEXT,
     UNIQUE (codigo_hex)
 );
 
--- Insertar fases
+
+-- Insertar retos
 INSERT INTO retos (codigo_hex, nombre, puntos) VALUES
-    ('FA', 'Reto 1', 900),
-    ('DD', 'Reto 2', 600),
-    ('5C', 'Reto 3', 1500),
-    ('23', 'Reto 4', 1900),
-    ('AF', 'Reto 5', 300);
+    ('FA', 'Únete al Dominio', 900),
+    ('17', 'No puedo trabajar', 300),
+    ('DD', 'El nuevo de la oficina', 600),
+    ('5C', 'Un gran poder conlleva una gran responsabilidad', 1500),
+    ('23', 'Juegos de rol', 1900),
+    ('AF', '¿Dónde está mi archivo?', 300);
+
+-- Actualizar descripción del reto
+UPDATE retos
+SET descripcion = '
+La máquina de Windows 11 está teniendo problemas para unirse al dominio de la empresa.
+Investiga y resuelve el problema para que pueda unirse correctamente al dominio.
+
+El administrador de sistemas ha proporcionado las siguientes credenciales para acceder a las máquinas:
+
+**Windows Server 2025:**
+    - *Usuario*: admin
+    - *Contraseña*: P@ssw0rd!
+
+**Windows 11:**
+    - *Usuario*: user
+    - *Contraseña*: UserP@ss1!
+'
+WHERE codigo_hex = 'FA';
+
+--
+
+UPDATE retos
+SET descripcion = '
+Ha llamado al departamento de sistemas un usuario llamado Vicente Valverde para informar que no puede trabajar. Según nos ha dicho, al intentar acceder a su máquina con Windows 11, recibe un mensaje de error que le impide iniciar sesión.
+
+Vicente tiene que hacer la liquidación trimestral de su departamento y necesita acceder urgentemente a su máquina para continuar con su trabajo. Si no lo consigue, dice que nos responsabilizaremos de las consecuencias. Que siempre la culpa es de sistemas...
+
+Investiga el problema y encuentra una solución para que Vicente pueda acceder a su máquina y continuar con su trabajo.
+'
+WHERE codigo_hex = '17';
+
+--
+
+UPDATE retos
+SET descripcion = '
+Tenemos un nuevo empleado en la oficina. Se llama David Daroca y parece muy majo. 
+
+Según nos informan del departamento de RRHH, David va a trabajar en el departamento de finanzas y necesita acceso a los recursos compartidos de la empresa.
+
+Debemos crear una cuenta de usuario para David en el dominio de la empresa y asignarlo a los grupos adecuados para que se pueda conectar a los recursos compartidos y se le apliquen las políticas de seguridad necesarias.'
+WHERE codigo_hex = 'DD';

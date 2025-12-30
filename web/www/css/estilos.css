@@ -200,3 +200,82 @@ button:hover {
     background: rgba(244, 67, 54, 0.2);
     color: #ef9a9a;
 }
+/* --- Menú principal --- */
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.menu-card {
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    padding: 25px;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 6px 15px rgba(0,0,0,.3);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.menu-card h2 {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+.menu-card p {
+    font-size: 0.95rem;
+    color: #b0bec5;
+}
+
+.menu-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 25px rgba(0,0,0,.5);
+}
+/* --- Retos --- */
+.reto-card {
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.3);
+}
+
+.reto-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.reto-nombre {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.reto-puntos {
+    background: #2196f3;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.reto-codigo {
+    font-size: 0.85rem;
+    color: #b0bec5;
+    margin-bottom: 12px;
+}
+
+.reto-descripcion h2,
+.reto-descripcion h3 {
+    margin-top: 10px;
+}
+
+.reto-descripcion ul {
+    margin-left: 20px;
+}
+
+.reto-descripcion.empty {
+    font-style: italic;
+    color: #90a4ae;
+}
