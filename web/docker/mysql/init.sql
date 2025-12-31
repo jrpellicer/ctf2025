@@ -65,8 +65,8 @@ Investiga y resuelve el problema para que pueda unirse correctamente al dominio.
 El administrador de sistemas ha proporcionado las siguientes credenciales para acceder a las máquinas:
 
 **Windows Server 2025:**
-    - *Usuario*: admin
-    - *Contraseña*: P@ssw0rd!
+    - *Usuario*: jugador
+    - *Contraseña*: jugador
 
 **Windows 11:**
     - *Usuario*: user

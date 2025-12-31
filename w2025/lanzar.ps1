@@ -1,40 +1,35 @@
 Import-Module ActiveDirectory
 
-# Parámetros
-$usuario = "jugador"
-$nombreCompleto = "Jugador"
-$ou = (Get-ADDomain).UsersContainer
-$password = ConvertTo-SecureString "jugador" -AsPlainText -Force
-
-# Crear usuario si no existe
-if (-not (Get-ADUser -Filter "SamAccountName -eq '$usuario'" -ErrorAction SilentlyContinue)) {
-
-    New-ADUser `
-        -SamAccountName $usuario `
-        -Name $nombreCompleto `
-        -GivenName $nombreCompleto `
-        -Enabled $true `
-        -AccountPassword $password `
-        -ChangePasswordAtLogon $false `
-        -Path $ou
-
-    # Añadir a administradores del dominio
-    Add-ADGroupMember -Identity "Admins. del dominio" -Members $usuario
-}
+# ---------------------------------------------------------
+# Generamos código del equipo y lo dejamos en el escritorio
+# ---------------------------------------------------------
 
 # Generar cadena hexadecimal aleatoria (6 caracteres)
 $hex = -join ((0..5) | ForEach-Object { '{0:X}' -f (Get-Random -Maximum 16) })
 
 # Ruta del escritorio del usuario (perfil por defecto)
-$desktopPath = "C:\Users\Default\Desktop"
-
-# Crear el escritorio si no existe (el perfil se crea al primer inicio de sesión,
-# así que lo forzamos)
-if (-not (Test-Path $desktopPath)) {
-    New-Item -ItemType Directory -Path $desktopPath -Force | Out-Null
-}
+$desktopPath = "$env:USERPROFILE\Desktop"
 
 # Crear el fichero equipo.txt
 $archivo = Join-Path $desktopPath "equipo.txt"
 Set-Content -Path $archivo -Value $hex
 
+
+
+# ---------------------------------------------------------
+# Eliminamos la tarea programada y el script de lanzamiento
+# ---------------------------------------------------------
+
+$TaskName = "LanzaPrimerInicio"
+$ScriptPath = $MyInvocation.MyCommand.Path
+
+# Esperar un poco para asegurar que el script ya está cargado
+Start-Sleep -Seconds 2
+
+# Eliminar la tarea programada
+Unregister-ScheduledTask -TaskName $TaskName -Confirm:$false
+
+# Autodestrucción (borrarse a sí mismo)
+Start-Process powershell.exe -ArgumentList `
+    "-Command Start-Sleep 1; Remove-Item -Path `"$ScriptPath`" -Force" `
+    -WindowStyle Hidden

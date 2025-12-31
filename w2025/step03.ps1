@@ -1,7 +1,72 @@
  Import-Module ActiveDirectory
 
-$DominioDN = "DC=cerezo,DC=asir"
+$DominioDN = "DC=asir,DC=iescamp,DC=es"
 $RutaCSV = ".\usuarios.csv"
+
+# Parámetros
+$usuario = "jugador"
+$nombreCompleto = "Jugador"
+$ou = (Get-ADDomain).UsersContainer
+$password = ConvertTo-SecureString "jugador" -AsPlainText -Force
+
+# Crear usuario jugador
+if (-not (Get-ADUser -Filter "SamAccountName -eq '$usuario'" -ErrorAction SilentlyContinue)) {
+
+    New-ADUser `
+        -SamAccountName $usuario `
+        -Name $nombreCompleto `
+        -GivenName $nombreCompleto `
+        -Enabled $true `
+        -AccountPassword $password `
+        -ChangePasswordAtLogon $false `
+        -Path $ou
+
+    # Añadir a administradores del dominio
+    Add-ADGroupMember -Identity "Admins. del dominio" -Members $usuario
+}
+
+# Planiificar trabajo para el primer inicio de sesión de jugador. Lanzará el juego.
+# VARIABLES
+$Origen = ".\lanza.ps1" 
+$DestinoDir = "C:\Scripts"
+$DestinoScript = "$DestinoDir\lanza.ps1"
+$TaskName = "LanzaPrimerInicio"
+$Usuario = "jugador"
+
+# Crear carpeta destino
+if (-Not (Test-Path $DestinoDir)) {
+    New-Item -Path $DestinoDir -ItemType Directory
+}
+
+# Copiar script
+Copy-Item $Origen $DestinoScript -Force
+
+# Acción: ejecutar PowerShell
+$Action = New-ScheduledTaskAction `
+    -Execute "powershell.exe" `
+    -Argument "-ExecutionPolicy Bypass -File `"$DestinoScript`""
+
+# Trigger: al iniciar sesión del usuario jugador
+$Trigger = New-ScheduledTaskTrigger -AtLogOn -User $Usuario
+
+# Configuración de la tarea
+$Settings = New-ScheduledTaskSettingsSet `
+    -AllowStartIfOnBatteries `
+    -DontStopIfGoingOnBatteries `
+    -StartWhenAvailable
+
+# Registrar tarea CON MÁXIMOS PRIVILEGIOS
+Register-ScheduledTask `
+    -TaskName $TaskName `
+    -Action $Action `
+    -Trigger $Trigger `
+    -Settings $Settings `
+    -User $Usuario `
+    -RunLevel Highest `
+    -Force
+
+Write-Host "Tarea programada creada con máximos privilegios."
+
 
 # OUs a crear
 $OUs = @(
@@ -50,7 +115,7 @@ foreach ($User in $Usuarios) {
 
     $OUPath = "$($User.OU),$DominioDN"
 
-    $Password = ConvertTo-SecureString "P@ssw0rd123!" -AsPlainText -Force
+    $Password = ConvertTo-SecureString "qwe_123" -AsPlainText -Force
 
     if (-not (Get-ADUser -Filter "SamAccountName -eq '$($User.Usuario)'" -ErrorAction SilentlyContinue)) {
 
