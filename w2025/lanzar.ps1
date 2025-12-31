@@ -15,6 +15,19 @@ $archivo = Join-Path $desktopPath "equipo.txt"
 Set-Content -Path $archivo -Value $hex
 
 
+# ---------------------------------------------------------
+# Eliminamos los scripts descargados
+# ---------------------------------------------------------
+
+# Borrar el archivo ZIP si existe
+if (Test-Path "C:\Users\Administrador\repo.zip") {
+    Remove-Item "C:\Users\Administrador\repo.zip" -Force
+}
+
+# Borrar la carpeta C:\ctf y todo su contenido si existe
+if (Test-Path "C:\ctf") {
+    Remove-Item "C:\ctf" -Recurse -Force
+}
 
 # ---------------------------------------------------------
 # Eliminamos la tarea programada y el script de lanzamiento

@@ -66,7 +66,7 @@ El administrador de sistemas ha proporcionado las siguientes credenciales para a
 
 **Windows Server 2025:**
     - *Usuario*: jugador
-    - *Contraseña*: jugador
+    - *Contraseña*: qwe_123
 
 **Windows 11:**
     - *Usuario*: user

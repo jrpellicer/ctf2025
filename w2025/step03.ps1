@@ -1,4 +1,4 @@
- Import-Module ActiveDirectory
+Import-Module ActiveDirectory
 
 $DominioDN = "DC=asir,DC=iescamp,DC=es"
 $RutaCSV = ".\usuarios.csv"
@@ -7,7 +7,7 @@ $RutaCSV = ".\usuarios.csv"
 $usuario = "jugador"
 $nombreCompleto = "Jugador"
 $ou = (Get-ADDomain).UsersContainer
-$password = ConvertTo-SecureString "jugador" -AsPlainText -Force
+$password = ConvertTo-SecureString "qwe_123" -AsPlainText -Force
 
 # Crear usuario jugador
 if (-not (Get-ADUser -Filter "SamAccountName -eq '$usuario'" -ErrorAction SilentlyContinue)) {
@@ -27,9 +27,9 @@ if (-not (Get-ADUser -Filter "SamAccountName -eq '$usuario'" -ErrorAction Silent
 
 # Planiificar trabajo para el primer inicio de sesión de jugador. Lanzará el juego.
 # VARIABLES
-$Origen = ".\lanza.ps1" 
+$Origen = ".\lanzar.ps1" 
 $DestinoDir = "C:\Scripts"
-$DestinoScript = "$DestinoDir\lanza.ps1"
+$DestinoScript = "$DestinoDir\lanzar.ps1"
 $TaskName = "LanzaPrimerInicio"
 $Usuario = "jugador"
 
@@ -137,3 +137,5 @@ foreach ($User in $Usuarios) {
     Add-ADGroupMember -Identity $User.Grupo -Members $User.Usuario -ErrorAction SilentlyContinue
 }
 
+Write-Host "Configuración finalizada. Máquina lista para ser clonada."
+Write-Host "En el siguiente inicio de sesión del usuario 'jugador', se lanzará el juego."
