@@ -1,13 +1,8 @@
 Import-Module ActiveDirectory
 
-$DominioDN = "DC=asir,DC=iescamp,DC=es"
-$RutaCSV = ".\usuarios.csv"
-
-# Parámetros
-$usuario = "jugador"
-$nombreCompleto = "Jugador"
+# CONFIGURACIÓN
+. "$PSScriptRoot\entorno.ps1"
 $ou = (Get-ADDomain).UsersContainer
-$password = ConvertTo-SecureString "qwe_123" -AsPlainText -Force
 
 # Crear usuario jugador
 if (-not (Get-ADUser -Filter "SamAccountName -eq '$usuario'" -ErrorAction SilentlyContinue)) {
@@ -124,7 +119,7 @@ foreach ($User in $Usuarios) {
             -GivenName $User.Nombre `
             -Surname $User.Apellido `
             -SamAccountName $User.Usuario `
-            -UserPrincipalName "$($User.Usuario)@cerezo.asir" `
+            -UserPrincipalName "$($User.Usuario)@$($Dominio)" `
             -Department $User.Departamento `
             -Path $OUPath `
             -AccountPassword $Password `

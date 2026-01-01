@@ -5,15 +5,29 @@ Import-Module ActiveDirectory
 # ---------------------------------------------------------
 
 # Generar cadena hexadecimal aleatoria (6 caracteres)
-$hex = -join ((0..5) | ForEach-Object { '{0:X}' -f (Get-Random -Maximum 16) })
+$equipo = -join ((0..5) | ForEach-Object { '{0:X}' -f (Get-Random -Maximum 16) })
 
-# Ruta del escritorio del usuario (perfil por defecto)
+# Ruta del escritorio del usuario
 $desktopPath = "$env:USERPROFILE\Desktop"
 
 # Crear el fichero equipo.txt
 $archivo = Join-Path $desktopPath "equipo.txt"
-Set-Content -Path $archivo -Value $hex
+Set-Content -Path $archivo -Value $equipo
 
+# ---------------------------------------------------------
+# Informamos del nombre de equipo generado mediante notificación
+# ---------------------------------------------------------
+
+# Configurar notificaciones emergentes en Centro de Notificaciones
+Add-Type -AssemblyName System.Windows.Forms
+
+$notify = New-Object System.Windows.Forms.NotifyIcon
+$notify.Icon = [System.Drawing.SystemIcons]::Information
+
+$notify.BalloonTipTitle = "Equipo Generado"
+$notify.BalloonTipText = $equipo
+$notify.Visible = $true
+$notify.ShowBalloonTip(25000)
 
 # ---------------------------------------------------------
 # Eliminamos los scripts descargados

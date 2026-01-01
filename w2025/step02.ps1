@@ -2,12 +2,7 @@
 # CONFIGURACIÓN
 # ==================================================
 
-# Dominio
-$Dominio = "asir.iescamp.es"
-$NetBIOS = "ASIR"
-
-# Contraseña DSRM (modo restauración)
-$DSRMPassword = ConvertTo-SecureString "qwe_123" -AsPlainText -Force
+. "$PSScriptRoot\entorno.ps1"
 
 # ==================================================
 # INSTALAR AD DS
