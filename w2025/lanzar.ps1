@@ -15,6 +15,20 @@ $archivo = Join-Path $desktopPath "equipo.txt"
 Set-Content -Path $archivo -Value $equipo
 
 # ---------------------------------------------------------
+# Reto 1 (No hace falta hacer nada)
+# ---------------------------------------------------------
+
+# ---------------------------------------------------------
+# Reto 2 Desactivar usuario
+# ---------------------------------------------------------
+
+Set-ADUser -Identity figlesias -Enabled: $false
+
+# ---------------------------------------------------------
+# Reto 3 (No hace falta hacer nada)
+# ---------------------------------------------------------
+
+# ---------------------------------------------------------
 # Informamos del nombre de equipo generado mediante notificación
 # ---------------------------------------------------------
 

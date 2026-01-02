@@ -3,6 +3,7 @@ Import-Module ActiveDirectory
 # CONFIGURACIÓN
 . "$PSScriptRoot\entorno.ps1"
 $ou = (Get-ADDomain).UsersContainer
+$RutaCSV = ".\usuarios.csv"
 
 # Crear usuario jugador
 if (-not (Get-ADUser -Filter "SamAccountName -eq '$usuario'" -ErrorAction SilentlyContinue)) {
@@ -131,6 +132,18 @@ foreach ($User in $Usuarios) {
 
     Add-ADGroupMember -Identity $User.Grupo -Members $User.Usuario -ErrorAction SilentlyContinue
 }
+
+# Crear equipos
+1..24 | ForEach-Object {
+    New-ADComputer `
+      -Name "PC-$($_.ToString('00'))" `
+      -SamAccountName "PC-$($_.ToString('00'))$" `
+      -Path "CN=Computers,$DominioDN" `
+      -Enabled $true
+
+      Write-Host "Equipo añadido al dominio: PC-$($_.ToString('00'))"
+}
+
 
 Write-Host "Configuración finalizada. Máquina lista para ser clonada."
 Write-Host "En el siguiente inicio de sesión del usuario 'jugador', se lanzará el juego."

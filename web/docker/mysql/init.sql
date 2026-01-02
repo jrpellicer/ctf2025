@@ -62,6 +62,8 @@ SET descripcion = '
 La máquina de Windows 11 está teniendo problemas para unirse al dominio de la empresa.
 Investiga y resuelve el problema para que pueda unirse correctamente al dominio.
 
+**Importante**: El nombre del equipo debe ser el siguiente correlativo al último equipo unido al dominio.
+
 El administrador de sistemas ha proporcionado las siguientes credenciales para acceder a las máquinas:
 
 **Windows Server 2025:**
@@ -78,11 +80,11 @@ WHERE codigo_hex = 'FA';
 
 UPDATE retos
 SET descripcion = '
-Ha llamado al departamento de sistemas un usuario llamado Vicente Valverde para informar que no puede trabajar. Según nos ha dicho, al intentar acceder a su máquina con Windows 11, recibe un mensaje de error que le impide iniciar sesión.
+Ha llamado al departamento de sistemas un directivo llamado Fernando Iglesias para informar que no puede trabajar. Según nos ha dicho, al intentar acceder a su máquina con Windows 11, recibe un mensaje de error que le impide iniciar sesión.
 
-Vicente tiene que hacer la liquidación trimestral de su departamento y necesita acceder urgentemente a su máquina para continuar con su trabajo. Si no lo consigue, dice que nos responsabilizaremos de las consecuencias. Que siempre la culpa es de sistemas...
+Fernando tiene que hacer la liquidación trimestral del IVA y necesita acceder urgentemente a su máquina para continuar con su trabajo. Si no lo consigue, dice que nos responsabilizaremos de las consecuencias. Que siempre la culpa es de los de sistemas...
 
-Investiga el problema y encuentra una solución para que Vicente pueda acceder a su máquina y continuar con su trabajo.
+Investiga el problema y encuentra una solución para que Fernando pueda acceder a su máquina y continuar con su trabajo.
 '
 WHERE codigo_hex = '17';
 
@@ -94,5 +96,5 @@ Tenemos un nuevo empleado en la oficina. Se llama David Daroca y parece muy majo
 
 Según nos informan del departamento de RRHH, David va a trabajar en el departamento de finanzas y necesita acceso a los recursos compartidos de la empresa.
 
-Debemos crear una cuenta de usuario para David en el dominio de la empresa y asignarlo a los grupos adecuados para que se pueda conectar a los recursos compartidos y se le apliquen las políticas de seguridad necesarias.'
+Debemos crear una cuenta de usuario para David en el dominio de la empresa (siguiendo el estándar de nombres de usuario y localización en el Directorio Activo que sigue la empresa) y asignarlo a los grupos adecuados para que se pueda conectar a los recursos compartidos y se le apliquen las políticas de seguridad necesarias.'
 WHERE codigo_hex = 'DD';
