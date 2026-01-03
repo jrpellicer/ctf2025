@@ -189,7 +189,7 @@ New-VirtualDisk `
     -StoragePoolFriendlyName "PoolDisks" `
     -FriendlyName "VolAdmin" `
     -ResiliencySettingName Simple `
-    -Size 197GB
+    -Size 197GB `
     -ProvisioningType Thin
 
 $vdisk = Get-VirtualDisk -FriendlyName "VolAdmin"
@@ -240,13 +240,13 @@ $scriptFile = "C:\DiscosVirtuales\diskpart_script.txt"
 
 # Crear la lista de comandos para Diskpart para todos los discos virtuales
 $commands = @(
-    "select vdisk file=`"$vhd1Path`"",
-    "attach vdisk",
-    "select vdisk file=`"$vhd2Path`"",
-    "attach vdisk",
     "select vdisk file=`"$vhd3Path`"",
     "attach vdisk",
     "select vdisk file=`"$vhd4Path`"",
+    "attach vdisk",
+    "select vdisk file=`"$vhd1Path`"",
+    "attach vdisk",
+    "select vdisk file=`"$vhd2Path`"",
     "attach vdisk",
     "exit"
 )
@@ -258,12 +258,6 @@ $commands | Out-File -FilePath $scriptFile -Encoding ASCII -Force
 
 $TaskName = "DiskPart_AlIniciarSesion"
 $DiskPartExe = "C:\Windows\System32\diskpart.exe"
-
-# Comprobación básica
-if (-not (Test-Path $DiskPartScript)) {
-    Write-Error "No existe el fichero de diskpart: $DiskPartScript"
-    exit 1
-}
 
 # -------------------------------
 # Acción: ejecutar diskpart
