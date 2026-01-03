@@ -104,7 +104,7 @@ WHERE codigo_hex = 'DD';
 
 UPDATE retos
 SET descripcion = '
-El volumen que tenemos en el servidor de 196GB se prevee que sea insuficiente para las necesidades actuales. Afortunadamente hay un disco de 100GB conectado y sin utilizar que podemos utilizar para ampliar el volumen. 
+El volumen de 196GB que tenemos en el servidor se prevee que sea insuficiente para las necesidades actuales. Afortunadamente hay un disco de 100GB conectado y sin utilizar que podemos utilizar para ampliar el volumen. 
 
 Tu misión es ampliar el volumen existente hasta los 295GB utilizando el espacio disponible en el nuevo disco, asegurándote de que los datos actuales se mantengan intactos y que el sistema siga funcionando correctamente después de la ampliación.
 '
