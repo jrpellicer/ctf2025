@@ -41,6 +41,7 @@ $archivoReto = Join-Path $desktopPath "retos.txt"
 $reto1Resuelto = $false
 $reto2Resuelto = $false
 $reto3Resuelto = $false
+$reto4Resuelto = $false
 while ($true) {
 # ---------------------------------------------------------
 # Reto 1. Unir el equipo al dominio
@@ -86,6 +87,20 @@ while ($true) {
     }
 
 
+# ---------------------------------------------------------
+# Reto 4. Comprobar volumen de datos ADMIN_DATA mayor de 290GB
+# ---------------------------------------------------------
+
+    if (-not $reto4Resuelto) {
+
+        # Obtener tamaño del volumen ADMIN_DATA
+        $volumen = Get-Volume -FileSystemLabel "ADMIN_DATA" -ErrorAction SilentlyContinue
+        if ($volumen -and $volumen.SizeRemaining -gt 290GB) {
+            Resolver-Reto -equipo $equipo -NumeroReto 4 -Identificador "AD"
+            $reto4Resuelto = $true
+        }
+    }
+    
 # ---------------------------------------------------------
     Start-Sleep -Seconds 10
 }

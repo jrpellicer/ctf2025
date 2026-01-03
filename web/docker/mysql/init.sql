@@ -52,6 +52,7 @@ INSERT INTO retos (codigo_hex, nombre, puntos) VALUES
     ('FA', 'Únete al Dominio', 900),
     ('17', 'No puedo trabajar', 300),
     ('DD', 'El nuevo de la oficina', 600),
+    ('AD', 'Amplíame el disco que me quedo corto', 1800),
     ('5C', 'Un gran poder conlleva una gran responsabilidad', 1500),
     ('23', 'Juegos de rol', 1900),
     ('AF', '¿Dónde está mi archivo?', 300);
@@ -98,3 +99,13 @@ Según nos informan del departamento de RRHH, David va a trabajar en el departam
 
 Debemos crear una cuenta de usuario para David en el dominio de la empresa (siguiendo el estándar de nombres de usuario y localización en el Directorio Activo que sigue la empresa) y asignarlo a los grupos adecuados para que se pueda conectar a los recursos compartidos y se le apliquen las políticas de seguridad necesarias.'
 WHERE codigo_hex = 'DD';
+
+--
+
+UPDATE retos
+SET descripcion = '
+El volumen que tenemos en el servidor de 196GB se prevee que sea insuficiente para las necesidades actuales. Afortunadamente hay un disco de 100GB conectado y sin utilizar que podemos utilizar para ampliar el volumen. 
+
+Tu misión es ampliar el volumen existente hasta los 295GB utilizando el espacio disponible en el nuevo disco, asegurándote de que los datos actuales se mantengan intactos y que el sistema siga funcionando correctamente después de la ampliación.
+'
+WHERE codigo_hex = 'AD';
