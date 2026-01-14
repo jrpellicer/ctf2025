@@ -53,9 +53,12 @@ INSERT INTO retos (codigo_hex, nombre, puntos) VALUES
     ('17', 'No puedo trabajar', 300),
     ('DD', 'El nuevo de la oficina', 600),
     ('AD', 'Amplíame el disco que me quedo corto', 1800),
-    ('5C', 'Un gran poder conlleva una gran responsabilidad', 1500),
+    ('11', '¿Por qué se ha apagado el equipo?', 300),
+    ('5C', 'Un gran poder conlleva una gran responsabilidad', 400),
     ('23', 'Juegos de rol', 1900),
-    ('AF', '¿Dónde está mi archivo?', 300);
+    ('AF', '¿Dónde está mi archivo?', 800),
+    ('45', 'Un ruso está intentando hackearnos', 300),
+    ('B3', 'No encuentro el Servidor WSUS', 1200);
 
 -- Actualizar descripción del reto
 UPDATE retos
@@ -109,3 +112,23 @@ El volumen de 196GB que tenemos en el servidor se prevee que sea insuficiente pa
 Tu misión es ampliar el volumen existente hasta los 295GB utilizando el espacio disponible en el nuevo disco, asegurándote de que los datos actuales se mantengan intactos y que el sistema siga funcionando correctamente después de la ampliación.
 '
 WHERE codigo_hex = 'AD';
+
+--
+
+UPDATE retos
+SET descripcion = '
+Alguien ha apagado el servidor principal de la empresa sin motivo aparente, lo que ha provocado una interrupción en los servicios y la pérdida de datos importantes.
+
+Tu misión es investigar las causas del apagado inesperado y revisar si el usuario ha dejado algún mensaje o información útil.
+'
+WHERE codigo_hex = '11';
+
+--
+
+UPDATE retos
+SET descripcion = '
+Un hacker está intentando acceder a nuestra red desde una IP rusa. Hemos detectado múltiples intentos de inicio de sesión fallidos en nuestros servidores provenientes de esta ubicación.
+
+Sabemos que ha intentado suplantar la identidad de uno de nuestros empleados, David Navarro, para intentar acceder a nuestros sistemas. Y Sabemos que intenta conectarse al dominio pero no sabe el nombre del dominio, y el nombre con el que prueba es un tanto sospechoso.
+'
+WHERE codigo_hex = '45';

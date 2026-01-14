@@ -29,6 +29,34 @@ Set-ADUser -Identity figlesias -Enabled: $false
 # ---------------------------------------------------------
 
 # ---------------------------------------------------------
+# Reto 4 Discos y Volúmenes
+# ---------------------------------------------------------
+
+
+# ---------------------------------------------------------
+# Reto 5 Simular apagado del equipo
+# ---------------------------------------------------------
+
+$Identificador = "11"
+$codigo = "{0:X8}" -f ((($v=[Convert]::ToUInt32("$equipo$Identificador",16)) -shl 11 -bor ($v -shr 21)) -band 0xFFFFFFFF)
+
+shutdown /s /t 60 /d p:2:4 /c "La bandera que buscas es: $codigo"
+timeout /t 2
+shutdown /a
+
+# ---------------------------------------------------------
+# Reto 9 Simular inicio de sesión incorrecto
+# ---------------------------------------------------------
+
+$Identificador = "45"
+$codigo = "{0:X8}" -f ((($v=[Convert]::ToUInt32("$equipo$Identificador",16)) -shl 11 -bor ($v -shr 21)) -band 0xFFFFFFFF)
+
+$user="$codigo\d.navarro"
+$sec = ConvertTo-SecureString "asaasa" -AsPlainText -Force
+$cred = New-Object System.Management.Automation.PSCredential($user, $sec)
+Invoke-Command -ComputerName localhost -Credential $cred -ScriptBlock { hostname } -ErrorAction SilentlyContinue
+
+# ---------------------------------------------------------
 # Informamos del nombre de equipo generado mediante notificación
 # ---------------------------------------------------------
 
