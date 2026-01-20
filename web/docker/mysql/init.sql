@@ -46,6 +46,16 @@ CREATE TABLE retos (
     UNIQUE (codigo_hex)
 );
 
+-- Crear tabla completados
+
+CREATE TABLE completados (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    reto_hex CHAR(2) NOT NULL,
+    equipo_hex CHAR(6) NOT NULL,
+    competicion_id INT NOT NULL,
+    tiempo INT UNSIGNED DEFAULT NULL,
+    UNIQUE (reto_hex, equipo_hex, competicion_id)
+);
 
 -- Insertar retos
 INSERT INTO retos (codigo_hex, nombre, puntos) VALUES

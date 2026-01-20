@@ -35,35 +35,52 @@ if ($_POST) {
         if ($puntos === false) {
             $mensaje = "❌ Reto no válido";
         } else {
-            // Obtener fecha_inicio de la competición
+            // Verificar si el equipo ya ha completado este reto en esta competición
             $stmt = $pdo->prepare(
-                "SELECT fecha_inicio FROM competiciones WHERE id = ?"
+                "SELECT COUNT(*) FROM completados WHERE equipo_hex = ? AND reto_hex = ? AND competicion_id = ?"
             );
-            $stmt->execute([$comp_id]);
-            $tz = new DateTimeZone('Europe/Madrid');
-            $fechaInicio = new DateTime($stmt->fetchColumn(), $tz);
+            $stmt->execute([$equipo, $reto, $comp_id]);
+            $yaCompletado = $stmt->fetchColumn() > 0;
 
-            $ahora = new DateTime();
-            $ahora       = new DateTime('now', $tz);
-            //$segundos = $ahora->getTimestamp() - $fechaInicio->getTimestamp();
-            $segundos = max(0, $ahora->getTimestamp() - $fechaInicio->getTimestamp());
-
-
-            // Incrementar puntos del equipo
-            $stmt = $pdo->prepare(
-                "UPDATE equipos
-                 SET
-                    puntos = puntos + ?,
-                    tiempo = ?
-                 WHERE codigo_hex = ? AND competicion_id = ?"
-            );
-            $stmt->execute([$puntos, $segundos, $equipo, $comp_id]);
-
-            if ($stmt->rowCount() === 0) {
-                $mensaje = "❌ Equipo no encontrado";
+            if ($yaCompletado) {
+                $mensaje = "❌ Este reto ya ha sido validado por este equipo";
             } else {
-                $mensaje = "✅ $puntos puntos añadidos al equipo $equipo";
-                $ok = true;
+                // Obtener fecha_inicio de la competición
+                $stmt = $pdo->prepare(
+                    "SELECT fecha_inicio FROM competiciones WHERE id = ?"
+                );
+                $stmt->execute([$comp_id]);
+                $tz = new DateTimeZone('Europe/Madrid');
+                $fechaInicio = new DateTime($stmt->fetchColumn(), $tz);
+
+                $ahora = new DateTime();
+                $ahora       = new DateTime('now', $tz);
+                //$segundos = $ahora->getTimestamp() - $fechaInicio->getTimestamp();
+                $segundos = max(0, $ahora->getTimestamp() - $fechaInicio->getTimestamp());
+
+
+                // Incrementar puntos del equipo
+                $stmt = $pdo->prepare(
+                    "UPDATE equipos
+                     SET
+                        puntos = puntos + ?,
+                        tiempo = ?
+                     WHERE codigo_hex = ? AND competicion_id = ?"
+                );
+                $stmt->execute([$puntos, $segundos, $equipo, $comp_id]);
+
+                if ($stmt->rowCount() === 0) {
+                    $mensaje = "❌ Equipo no encontrado";
+                } else {
+                    // Registrar el reto completado
+                    $stmt = $pdo->prepare(
+                        "INSERT INTO completados (equipo_hex, reto_hex, competicion_id, tiempo) VALUES (?, ?, ?, ?)"
+                    );
+                    $stmt->execute([$equipo, $reto, $comp_id, $segundos]);
+
+                    $mensaje = "✅ $puntos puntos añadidos al equipo $equipo";
+                    $ok = true;
+                }
             }
         }
     }
