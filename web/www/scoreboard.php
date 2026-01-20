@@ -11,6 +11,7 @@ $competiciones = $pdo->query("SELECT * FROM competiciones")->fetchAll();
     <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
+    <?php include 'menu.php'; ?>
     <div class="container">
         <h1>Competición de Equipos</h1>
 

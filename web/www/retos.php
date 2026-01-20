@@ -40,6 +40,7 @@ $retos = $pdo->query(
     <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
+    <?php include 'menu.php'; ?>
     <div class="container">
         <h1>Retos de la competición</h1>
 

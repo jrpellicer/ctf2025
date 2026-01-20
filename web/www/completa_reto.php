@@ -77,6 +77,7 @@ if ($_POST) {
     <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
+    <?php include 'menu.php'; ?>
     <div class="container small">
         <h1>Completar reto</h1>
 
