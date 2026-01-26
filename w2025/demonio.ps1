@@ -42,7 +42,8 @@ $reto1Resuelto = $false
 $reto2Resuelto = $false
 $reto3Resuelto = $false
 $reto4Resuelto = $false
-$reto7Resuelto = $false
+$reto6Resuelto = $false
+$reto8Resuelto = $false
 while ($true) {
 # ---------------------------------------------------------
 # Reto 1. Unir el equipo al dominio
@@ -102,20 +103,36 @@ while ($true) {
         }
     }
 
+# ---------------------------------------------------------
+# Reto 6. Comprobar que el usuario Miguel Torres pertenece al grupo administradores del dominio
+# ---------------------------------------------------------
+
+    if (-not $reto6Resuelto) {
+
+        # Obtener el usuario Miguel Torres
+        $usuario = Get-ADUser -Identity "Miguel Torres" -ErrorAction SilentlyContinue
+
+        # Comprobar si pertenece al grupo de administradores del dominio
+        if ($usuario -and (Get-ADUser $usuario -Properties MemberOf).MemberOf -contains (Get-ADGroup "Admins. del dominio").DistinguishedName) {
+            Resolver-Reto -equipo $equipo -NumeroReto 6 -Identificador "5C"
+            $reto6Resuelto = $true
+        }
+    }
+
 
 # ---------------------------------------------------------
-# Reto 7. Comprobar archivo restaurado
+# Reto 8. Comprobar archivo restaurado
 # ---------------------------------------------------------
 
-    if (-not $reto7Resuelto) {
+    if (-not $reto8Resuelto) {
         $archivo = "contrato_9831.txt"
         $ruta = "C:\Archivos\Contratos"
         $tamano=1234 # Tamaño en bytes esperado
         $archivoRestaurado = Join-Path $ruta $archivo
 
         if (Test-Path $archivoRestaurado -and (Get-Item $archivoRestaurado).Length -eq $tamano) {
-            Resolver-Reto -equipo $equipo -NumeroReto 7 -Identificador "AF"
-            $reto7Resuelto = $true
+            Resolver-Reto -equipo $equipo -NumeroReto 8 -Identificador "AF"
+            $reto8Resuelto = $true
         }
     }
 
