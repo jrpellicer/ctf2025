@@ -42,6 +42,7 @@ $reto1Resuelto = $false
 $reto2Resuelto = $false
 $reto3Resuelto = $false
 $reto4Resuelto = $false
+$reto7Resuelto = $false
 while ($true) {
 # ---------------------------------------------------------
 # Reto 1. Unir el equipo al dominio
@@ -100,7 +101,24 @@ while ($true) {
             $reto4Resuelto = $true
         }
     }
-    
+
+
+# ---------------------------------------------------------
+# Reto 7. Comprobar archivo restaurado
+# ---------------------------------------------------------
+
+    if (-not $reto7Resuelto) {
+        $archivo = "contrato_9831.txt"
+        $ruta = "C:\Archivos\Contratos"
+        $tamano=1234 # Tamaño en bytes esperado
+        $archivoRestaurado = Join-Path $ruta $archivo
+
+        if (Test-Path $archivoRestaurado -and (Get-Item $archivoRestaurado).Length -eq $tamano) {
+            Resolver-Reto -equipo $equipo -NumeroReto 7 -Identificador "AF"
+            $reto7Resuelto = $true
+        }
+    }
+
 # ---------------------------------------------------------
     Start-Sleep -Seconds 10
 }

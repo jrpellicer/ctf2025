@@ -302,6 +302,101 @@ Register-ScheduledTask `
 
 Write-Host "Tarea programada '$TaskName' creada correctamente."
 
+# ===============================
+# Configuración de copias de seguridad
+# ===============================
+$BasePath   = "C:\DatosEmpresa"
+$Fecha      = Get-Date -Format "yyyyMMdd_HHmmss"
+
+# LISTAS DE NOMBRES DE DIRECTORIOS Y EXTENSIONES
+$Departamentos = @(
+    "Finanzas",
+    "RecursosHumanos",
+    "Informatica",
+    "Ventas",
+    "Marketing",
+    "Logistica",
+    "Proyectos"
+)
+
+$Subcarpetas = @(
+    "Documentos",
+    "Informes",
+    "Contratos",
+    "Presupuestos",
+    "Planificacion",
+    "Historico"
+)
+
+$Extensiones = @(".txt", ".pdf", ".dat", ".docx")
+
+# CREAR ESTRUCTURA DE DIRECTORIOS
+Write-Host "Creando estructura de directorios..." -ForegroundColor Cyan
+
+foreach ($Dept in $Departamentos) {
+    foreach ($Sub in $Subcarpetas) {
+        $Ruta = Join-Path $BasePath "$Dept\$Sub"
+        New-Item -ItemType Directory -Path $Ruta -Force | Out-Null
+
+        # CREAR ARCHIVOS ALEATORIOS
+        $NumArchivos = Get-Random -Minimum 15 -Maximum 25
+
+        for ($i = 1; $i -le $NumArchivos; $i++) {
+
+            $NombreArchivo = "{0}_{1}{2}" -f `
+                ($Sub.Substring(0,3)), `
+                (Get-Random -Minimum 1000 -Maximum 9000), `
+                ($Extensiones | Get-Random)
+
+            $RutaArchivo = Join-Path $Ruta $NombreArchivo
+
+            # Tamaño entre 500 bytes y 2 MB
+            $Tamano = Get-Random -Minimum 500 -Maximum 2097152
+
+            # Generar contenido aleatorio
+            $Bytes = New-Object byte[] $Tamano
+            (New-Object System.Random).NextBytes($Bytes)
+
+            [System.IO.File]::WriteAllBytes($RutaArchivo, $Bytes)
+        }
+    }
+}
+
+# CREAR ARCHIVOS A RESTAURAR
+$Ruta = Join-Path $BasePath "Ventas\Contratos"
+$NombreArchivo = "Con_9831.docx"
+$RutaArchivo = Join-Path $Ruta $NombreArchivo
+$Tamano = 1234
+
+# Generar contenido aleatorio
+$Bytes = New-Object byte[] $Tamano
+(New-Object System.Random).NextBytes($Bytes)
+
+[System.IO.File]::WriteAllBytes($RutaArchivo, $Bytes)
+
+
+# COPIA DE SEGURIDAD CON WINDOWS SERVER BACKUP
+
+Write-Host "Instalando Windows Server Backup..." -ForegroundColor Green
+Install-WindowsFeature -Name Windows-Server-Backup
+
+Write-Host "Iniciando copia de seguridad con Windows Server Backup..." -ForegroundColor Cyan
+
+$OrigenBackup = "C:\DatosEmpresa"
+$DestinoBackup = "E:"
+
+wbadmin start backup `
+    -backupTarget:$DestinoBackup `
+    -include:$OrigenBackup `
+    -quiet
+
+Write-Host "Copia de seguridad finalizada correctamente." -ForegroundColor Green
+
+# ELIMINACIÓN ARCHIVO A RESTAURAR
+Remove-Item $RutaArchivo
+
+Write-Host "Archivo $RutaArchivo eliminado." -ForegroundColor Cyan
+
 
 Write-Host "Configuración finalizada. Máquina lista para ser clonada."
 Write-Host "En el siguiente inicio de sesión del usuario 'jugador', se lanzará el juego."

@@ -142,3 +142,33 @@ Un hacker está intentando acceder a nuestra red desde una IP rusa. Hemos detect
 Sabemos que ha intentado suplantar la identidad de uno de nuestros empleados, David Navarro, para intentar acceder a nuestros sistemas. Y Sabemos que intenta conectarse al dominio pero no sabe el nombre del dominio, y el nombre con el que prueba es un tanto sospechoso.
 '
 WHERE codigo_hex = '45';
+
+--
+
+UPDATE retos
+SET descripcion = '
+Algún becario del departamento de ventas ha eliminado el contrato número 9831 que teníamos guardado en el servidor de archivos.
+
+Tu misión es recuperar el archivo eliminado y restaurarlo a su ubicación original en el servidor de archivos,a partir de la copia de seguridad realizada.
+'
+WHERE codigo_hex = 'AF';
+
+--
+
+UPDATE retos
+SET descripcion = '
+Miguel Torres ha finalizado exitosamente sus estudios de ASIR y tras completar su formación en la empresa, está listo para asumir nuevas responsabilidades.
+
+Ha sido asignado para gestionar el Servidor LDAP de la empresa, y necesitará permisos para llevar a cabo sus tareas diarias.
+'
+WHERE codigo_hex = '5C';
+
+--
+
+UPDATE retos
+SET descripcion = '
+Hemos detectado que el Servidor WSUS de la empresa no está funcionando correctamente y no puede distribuir las actualizaciones a los equipos clientes.
+
+Es posible que los equipos cliente no estén intentando descargarse las actualizaciones desde el servidor WSUS correcto. Investiga y resuelve el problema para asegurar que las actualizaciones se distribuyan correctamente a todos los equipos de la red.
+'
+WHERE codigo_hex = 'B3';

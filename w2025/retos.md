@@ -16,25 +16,25 @@
 
   Ampliar un vloumen a partir de un nuevo disco mediante grupos de volúmenes.
 
-  ## Reto 5: Un gran poder conlleva una gran responsabilidad
+  ## Reto 5: ¿Por qué se ha apagado el equipo?
+
+  Se ha apagado el equipo y no sabemos la causa.
+  
+  ## Reto 6: Un gran poder conlleva una gran responsabilidad
 
   Hacer administrador a un usuario.
 
-  ## Reto 6: Juegos de rol
+  ## Reto 7: Juegos de rol
 
   Instalar un rol ¿Sistema avanzado de ficheros?
 
-  ## Reto 7: ¿Dónde está mi archivo?
+  ## Reto 8: ¿Dónde está mi archivo?
 
   Restaurar un archivo a partir de una copia de seguridad
 
-  ## Reto 8: Un ruso está intentando hackearnos
+  ## Reto 9: Un ruso está intentando hackearnos
 
   Alguien está intentando iniciar sesión con un usuario.
-
-  ## Reto 9: ¿Por qué se ha apagado el equipo?
-
-  Se ha apagado el equipo y no sabemos la causa.
 
   ## Reto 10: No encuentro el Servidor WSUS
 

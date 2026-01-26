@@ -56,6 +56,60 @@ $sec = ConvertTo-SecureString "asaasa" -AsPlainText -Force
 $cred = New-Object System.Management.Automation.PSCredential($user, $sec)
 Invoke-Command -ComputerName localhost -Credential $cred -ScriptBlock { hostname } -ErrorAction SilentlyContinue
 
+
+# ---------------------------------------------------------
+# Reto 10 Poner servidor wsus incorrecto
+# ---------------------------------------------------------
+
+$Identificador = "B3"
+$codigo = "{0:X8}" -f ((($v=[Convert]::ToUInt32("$equipo$Identificador",16)) -shl 11 -bor ($v -shr 21)) -band 0xFFFFFFFF)
+
+# Configurar el servidor WSUS incorrecto
+Import-Module GroupPolicy
+
+# Nombre de la GPO
+$GpoName = "WSUS"
+
+# URL del servidor WSUS
+$WsusServer = "http://$codigo:8530"
+
+# Obtener el dominio
+$Domain = (Get-ADDomain).DistinguishedName
+
+# Crear la GPO si no existe
+if (-not (Get-GPO -Name $GpoName -ErrorAction SilentlyContinue)) {
+    $Gpo = New-GPO -Name $GpoName
+} else {
+    $Gpo = Get-GPO -Name $GpoName
+}
+
+# Vincular la GPO al dominio
+New-GPLink -Name $GpoName -Target $Domain -Enforced No
+
+# Ruta de registro usada por Windows Update
+$WUPath = "HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate"
+$AUPath = "$WUPath\AU"
+
+# Configurar servidor WSUS
+Set-GPRegistryValue -Name $GpoName `
+    -Key $WUPath `
+    -ValueName "WUServer" `
+    -Type String `
+    -Value $WsusServer
+
+Set-GPRegistryValue -Name $GpoName `
+    -Key $WUPath `
+    -ValueName "WUStatusServer" `
+    -Type String `
+    -Value $WsusServer
+
+# Habilitar uso de WSUS
+Set-GPRegistryValue -Name $GpoName `
+    -Key $AUPath `
+    -ValueName "UseWUServer" `
+    -Type DWord `
+    -Value 1
+
 # ---------------------------------------------------------
 # Informamos del nombre de equipo generado mediante notificación
 # ---------------------------------------------------------
