@@ -20,7 +20,7 @@ $DominioDN = "DC=asir,DC=iescamp,DC=es"
 $DSRMPassword = ConvertTo-SecureString "qwe_123" -AsPlainText -Force
 
 # Usuario para jugar
-$usuario = "jugador"
-$nombreCompleto = "Jugador"
+$usuario = "adminsistema"
+$nombreCompleto = "adminsistema"
 $password = ConvertTo-SecureString "qwe_123" -AsPlainText -Force
 

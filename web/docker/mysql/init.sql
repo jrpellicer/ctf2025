@@ -81,12 +81,12 @@ Investiga y resuelve el problema para que pueda unirse correctamente al dominio.
 El administrador de sistemas ha proporcionado las siguientes credenciales para acceder a las máquinas:
 
 **Windows Server 2025:**
-    - *Usuario*: jugador
+    - *Usuario*: adminsistema
     - *Contraseña*: qwe_123
 
 **Windows 11:**
-    - *Usuario*: user
-    - *Contraseña*: UserP@ss1!
+    - *Usuario*: soporte
+    - *Contraseña*: qwe_123
 '
 WHERE codigo_hex = 'FA';
 

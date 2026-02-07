@@ -20,9 +20,10 @@ if (-not (Get-ADUser -Filter "SamAccountName -eq '$usuario'" -ErrorAction Silent
     # Añadir a administradores del dominio
     Add-ADGroupMember -Identity "Admins. del dominio" -Members $usuario
 }
-
-# Planiificar trabajo para el primer inicio de sesión de jugador. Lanzará el juego.
-# VARIABLES
+#----------------------------------------------------------------------------------
+# Planificar trabajo para el primer inicio de sesión de jugador. Lanzará el juego.
+# ----------------------------------------------------------------------------------
+# Variables para la tarea programada
 $Origen = ".\lanzar.ps1" 
 $DestinoDir = "C:\Scripts"
 $DestinoScript = "$DestinoDir\lanzar.ps1"
@@ -62,7 +63,52 @@ Register-ScheduledTask `
 
 Write-Host "Tarea programada creada con máximos privilegios."
 
+#----------------------------------------------------------------------------------
+# Planificar trabajo para cada inicio de sesión de jugador. Lanzará el juego.
+# ----------------------------------------------------------------------------------
+# Variables para la tarea programada
+$Origen = ".\demonio.ps1" 
+$DestinoDir = "C:\Scripts"
+$DestinoScript = "$DestinoDir\demonio.ps1"
+$TaskName = "LanzaDemonio"
 
+# Crear carpeta destino
+if (-Not (Test-Path $DestinoDir)) {
+    New-Item -Path $DestinoDir -ItemType Directory
+}
+
+# Copiar script
+Copy-Item $Origen $DestinoScript -Force
+
+# Acción: ejecutar PowerShell
+$Action = New-ScheduledTaskAction `
+    -Execute "powershell.exe" `
+    -Argument "-ExecutionPolicy Bypass -File `"$DestinoScript`""
+
+# Trigger: al iniciar sesión del usuario jugador
+$Trigger = New-ScheduledTaskTrigger -AtLogOn -User $Usuario
+
+# Configuración de la tarea
+$Settings = New-ScheduledTaskSettingsSet `
+    -AllowStartIfOnBatteries `
+    -DontStopIfGoingOnBatteries `
+    -StartWhenAvailable
+
+# Registrar tarea CON MÁXIMOS PRIVILEGIOS
+Register-ScheduledTask `
+    -TaskName $TaskName `
+    -Action $Action `
+    -Trigger $Trigger `
+    -Settings $Settings `
+    -User $Usuario `
+    -RunLevel Highest `
+    -Force
+
+Write-Host "Tarea programada creada con máximos privilegios."
+
+# ---------------------------------------------------------
+# Crear estructura de OUs, usuarios, grupos y equipos en Active Directory
+# ---------------------------------------------------------
 # OUs a crear
 $OUs = @(
     "Ventas",
@@ -254,7 +300,9 @@ $commands = @(
 # Guardar los comandos en el archivo de texto
 $commands | Out-File -FilePath $scriptFile -Encoding ASCII -Force
 
+# -------------------------------------------------------------------------------
 # Configuración tarea planificada para exponer discos al iniciar sesión 'jugador'
+# -------------------------------------------------------------------------------
 
 $TaskName = "DiskPart_AlIniciarSesion"
 $DiskPartExe = "C:\Windows\System32\diskpart.exe"
@@ -399,4 +447,5 @@ Write-Host "Archivo $RutaArchivo eliminado." -ForegroundColor Cyan
 
 
 Write-Host "Configuración finalizada. Máquina lista para ser clonada."
-Write-Host "En el siguiente inicio de sesión del usuario 'jugador', se lanzará el juego."
+Write-Host "En el siguiente inicio de sesión del usuario $($User.Usuario), se lanzará el juego."
+
