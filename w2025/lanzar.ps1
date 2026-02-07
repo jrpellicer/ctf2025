@@ -161,7 +161,7 @@ $TaskName = "LanzaPrimerInicio"
 $ScriptPath = $MyInvocation.MyCommand.Path
 
 # Esperar un poco para asegurar que el script ya está cargado
-Start-Sleep -Seconds 2
+Start-Sleep -Seconds 30
 
 # Eliminar la tarea programada
 Unregister-ScheduledTask -TaskName $TaskName -Confirm:$false
