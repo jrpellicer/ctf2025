@@ -1,6 +1,20 @@
 Import-Module ActiveDirectory
 
 # ---------------------------------------------------------
+# Habilitamos notificaciones emergentes en Centro de Notificaciones
+# ---------------------------------------------------------
+
+# Desactivar No molestar
+Set-ItemProperty `
+ -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\QuietHours" `
+ -Name "Enabled" -Type DWord -Value 0 -ErrorAction SilentlyContinue
+
+# Asegurar notificaciones activas
+Set-ItemProperty `
+ -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings" `
+ -Name "NOC_GLOBAL_SETTING_TOASTS_ENABLED" -Type DWord -Value 1 -ErrorAction SilentlyContinue
+
+# ---------------------------------------------------------
 # Generamos código del equipo y lo dejamos en el escritorio
 # ---------------------------------------------------------
 
