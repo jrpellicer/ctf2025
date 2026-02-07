@@ -83,7 +83,7 @@ Copy-Item $Origen $DestinoScript -Force
 # Acción: ejecutar PowerShell
 $Action = New-ScheduledTaskAction `
     -Execute "powershell.exe" `
-    -Argument "-ExecutionPolicy Bypass -File `"$DestinoScript`""
+    -Argument "-WindowStyle Hidden -ExecutionPolicy Bypass -File `"$DestinoScript`""
 
 # Trigger: al iniciar sesión del usuario jugador
 $Trigger = New-ScheduledTaskTrigger -AtLogOn -User $Usuario
