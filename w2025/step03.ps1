@@ -36,11 +36,8 @@ if (-Not (Test-Path $DestinoDir)) {
 
 # Copiar script forzando UTF-8 con BOM
 $contenido = Get-Content $Origen -Raw
-[System.IO.File]::WriteAllText(
-    $DestinoScript,
-    $contenido,
-    New-Object System.Text.UTF8Encoding($true)  # true = BOM
-)
+$utf8bom = New-Object System.Text.UTF8Encoding($true)
+[System.IO.File]::WriteAllText($DestinoScript, $contenido, $utf8bom)
 
 # Acción: ejecutar PowerShell
 $Action = New-ScheduledTaskAction `
@@ -84,11 +81,8 @@ if (-Not (Test-Path $DestinoDir)) {
 
 # Copiar script forzando UTF-8 con BOM
 $contenido = Get-Content $Origen -Raw
-[System.IO.File]::WriteAllText(
-    $DestinoScript,
-    $contenido,
-    New-Object System.Text.UTF8Encoding($true)  # true = BOM
-)
+$utf8bom = New-Object System.Text.UTF8Encoding($true)
+[System.IO.File]::WriteAllText($DestinoScript, $contenido, $utf8bom)
 
 # Acción: ejecutar PowerShell
 $Action = New-ScheduledTaskAction `
