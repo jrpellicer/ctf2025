@@ -126,7 +126,7 @@ $template = @"
 <toast>
     <visual>
         <binding template="ToastGeneric">
-            <text>"Equipo generado"</text>
+            <text>Código de equipo generado:</text>
             <text>$equipo</text>
         </binding>
     </visual>
