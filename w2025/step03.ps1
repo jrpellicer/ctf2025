@@ -34,13 +34,18 @@ if (-Not (Test-Path $DestinoDir)) {
     New-Item -Path $DestinoDir -ItemType Directory
 }
 
-# Copiar script
-Copy-Item $Origen $DestinoScript -Force
+# Copiar script forzando UTF-8 con BOM
+$contenido = Get-Content $Origen -Raw
+[System.IO.File]::WriteAllText(
+    $DestinoScript,
+    $contenido,
+    New-Object System.Text.UTF8Encoding($true)  # true = BOM
+)
 
 # Acción: ejecutar PowerShell
 $Action = New-ScheduledTaskAction `
     -Execute "powershell.exe" `
-    -Argument "-ExecutionPolicy Bypass -File `"$DestinoScript`""
+    -Argument "-WindowStyle Hidden -ExecutionPolicy Bypass -File `"$DestinoScript`""
 
 # Trigger: al iniciar sesión del usuario jugador
 $Trigger = New-ScheduledTaskTrigger -AtLogOn -User $Usuario
@@ -77,8 +82,13 @@ if (-Not (Test-Path $DestinoDir)) {
     New-Item -Path $DestinoDir -ItemType Directory
 }
 
-# Copiar script
-Copy-Item $Origen $DestinoScript -Force
+# Copiar script forzando UTF-8 con BOM
+$contenido = Get-Content $Origen -Raw
+[System.IO.File]::WriteAllText(
+    $DestinoScript,
+    $contenido,
+    New-Object System.Text.UTF8Encoding($true)  # true = BOM
+)
 
 # Acción: ejecutar PowerShell
 $Action = New-ScheduledTaskAction `
@@ -189,7 +199,9 @@ foreach ($User in $Usuarios) {
       Write-Host "Equipo añadido al dominio: PC-$($_.ToString('00'))"
 }
 
-## Discos y Volúmenes
+# ---------------------------------------------------------
+# Crear Discos y Volúmenes
+# ---------------------------------------------------------
 
 # Crear ruta de almacenamiento de los discos virtuales si no existe
 $discosPath = "C:\DiscosVirtuales"
@@ -303,43 +315,33 @@ $commands | Out-File -FilePath $scriptFile -Encoding ASCII -Force
 # -------------------------------------------------------------------------------
 # Configuración tarea planificada para exponer discos al iniciar sesión 'jugador'
 # -------------------------------------------------------------------------------
-
 $TaskName = "DiskPart_AlIniciarSesion"
 $DiskPartExe = "C:\Windows\System32\diskpart.exe"
 
-# -------------------------------
-# Acción: ejecutar diskpart
-# -------------------------------
+# Acción: ejecutar DiskPart de forma oculta
 $Action = New-ScheduledTaskAction `
-    -Execute $DiskPartExe `
-    -Argument "/s `"$scriptFile`""
+    -Execute "powershell.exe" `
+    -Argument "-NoProfile -WindowStyle Hidden -Command `"& '$DiskPartExe' /s '$scriptFile'`""
 
-# -------------------------------
-# Disparador: inicio de sesión del usuario jugador
-# -------------------------------
+# Disparador: inicio de sesión del usuario
 $Trigger = New-ScheduledTaskTrigger `
     -AtLogOn `
     -User $usuario
 
-# -------------------------------
 # Principal: ejecutar con máximos privilegios
-# -------------------------------
 $Principal = New-ScheduledTaskPrincipal `
     -UserId $usuario `
     -LogonType Interactive `
     -RunLevel Highest
 
-# -------------------------------
 # Configuración adicional
-# -------------------------------
 $Settings = New-ScheduledTaskSettingsSet `
     -AllowStartIfOnBatteries `
     -DontStopIfGoingOnBatteries `
-    -StartWhenAvailable
+    -StartWhenAvailable `
+    -Hidden
 
-# -------------------------------
 # Registrar la tarea
-# -------------------------------
 Register-ScheduledTask `
     -TaskName $TaskName `
     -Action $Action `
@@ -347,6 +349,7 @@ Register-ScheduledTask `
     -Principal $Principal `
     -Settings $Settings `
     -Force
+
 
 Write-Host "Tarea programada '$TaskName' creada correctamente."
 

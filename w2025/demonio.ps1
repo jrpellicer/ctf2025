@@ -1,22 +1,36 @@
 Import-Module ActiveDirectory
 
-# Configurar notificaciones emergentes en Centro de Notificaciones
-Add-Type -AssemblyName System.Windows.Forms
-$notify = New-Object System.Windows.Forms.NotifyIcon
-$notify.Icon = [System.Drawing.SystemIcons]::Information
+# --- Inicialización WinRT ---
+$null = [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime]
+$null = [Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom, ContentType = WindowsRuntime]
 
-# Mostrar notificaciones emergentes
 function Mostrar-Notificacion {
     param (
         [string]$Titulo,
         [string]$Texto
     )
 
-    $notify.BalloonTipTitle = $Titulo
-    $notify.BalloonTipText  = $Texto
-    $notify.Visible = $true
-    $notify.ShowBalloonTip(5000)
+    $AppId = "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\WindowsPowerShell\v1.0\powershell.exe"
+
+    $template = @"
+<?xml version="1.0" encoding="UTF-8"?>
+<toast>
+    <visual>
+        <binding template="ToastGeneric">
+            <text><![CDATA[$Titulo]]></text>
+            <text><![CDATA[$Texto]]></text>
+        </binding>
+    </visual>
+</toast>
+"@
+
+    $xml = New-Object Windows.Data.Xml.Dom.XmlDocument
+    $xml.LoadXml($template)
+
+    $toast = New-Object Windows.UI.Notifications.ToastNotification($xml)
+    [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier($AppId).Show($toast)
 }
+
 
 # Resolver reto
 function Resolver-Reto {

@@ -1,20 +1,6 @@
 Import-Module ActiveDirectory
 
 # ---------------------------------------------------------
-# Habilitamos notificaciones emergentes en Centro de Notificaciones
-# ---------------------------------------------------------
-
-# Desactivar No molestar
-Set-ItemProperty `
- -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\QuietHours" `
- -Name "Enabled" -Type DWord -Value 0 -ErrorAction SilentlyContinue
-
-# Asegurar notificaciones activas
-Set-ItemProperty `
- -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings" `
- -Name "NOC_GLOBAL_SETTING_TOASTS_ENABLED" -Type DWord -Value 1 -ErrorAction SilentlyContinue
-
-# ---------------------------------------------------------
 # Generamos código del equipo y lo dejamos en el escritorio
 # ---------------------------------------------------------
 
@@ -129,15 +115,28 @@ Set-GPRegistryValue -Name $GpoName `
 # ---------------------------------------------------------
 
 # Configurar notificaciones emergentes en Centro de Notificaciones
-Add-Type -AssemblyName System.Windows.Forms
+$null = [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime]
+$null = [Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom, ContentType = WindowsRuntime]
 
-$notify = New-Object System.Windows.Forms.NotifyIcon
-$notify.Icon = [System.Drawing.SystemIcons]::Information
+# Usar el AppID oficial de PowerShell (esto evita que Windows bloquee la notificación)
+$AppId = "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\WindowsPowerShell\v1.0\powershell.exe"
 
-$notify.BalloonTipTitle = "Equipo Generado"
-$notify.BalloonTipText = $equipo
-$notify.Visible = $true
-$notify.ShowBalloonTip(25000)
+$template = @"
+<?xml version="1.0" encoding="UTF-8"?>
+<toast>
+    <visual>
+        <binding template="ToastGeneric">
+            <text>"Equipo generado"</text>
+            <text>$equipo</text>
+        </binding>
+    </visual>
+</toast>
+"@
+
+$xml = New-Object Windows.Data.Xml.Dom.XmlDocument
+$xml.LoadXml($template)
+$toast = New-Object Windows.UI.Notifications.ToastNotification($xml)
+[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier($AppId).Show($toast)
 
 # ---------------------------------------------------------
 # Eliminamos los scripts descargados

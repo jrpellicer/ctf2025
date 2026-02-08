@@ -79,7 +79,7 @@ En este punto ya se puede clonar la máquina (o crear plantillas) para que cada 
 
 ## Personalización de los flags y creación de los retos
 
-Al iniciar sesión por primera vez con el usuario definido en `entorno.ps1` (`jugador` por defecto) se lanza automáticamente el script de personalización de equipos y flags.
+Al iniciar sesión por primera vez con el usuario definido en `entorno.ps1` (`adminsistema` por defecto) se lanza automáticamente el script de personalización de equipos y flags.
 
 ## Scripts preparación Windows 11
 En el hipervisor, configurar el adaptador de red de la máquina virtual para que tenga conexión a Internet (*NAT* en VBox, *Default* en IsardVDI).
