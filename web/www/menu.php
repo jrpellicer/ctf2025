@@ -3,7 +3,5 @@
         <li><a href="retos.php" style="color: white; text-decoration: none; padding: 10px 15px; display: block;">Retos</a></li>
         <li><a href="completa_reto.php" style="color: white; text-decoration: none; padding: 10px 15px; display: block;">Completa Reto</a></li>
         <li><a href="scoreboard.php" style="color: white; text-decoration: none; padding: 10px 15px; display: block;">Scoreboard</a></li>
-        <li><a href="alta_equipos.php" style="color: white; text-decoration: none; padding: 10px 15px; display: block;">Alta Equipos</a></li>
-        <li><a href="alta_competicion.php" style="color: white; text-decoration: none; padding: 10px 15px; display: block;">Alta Competición</a></li>
     </ul>
 </nav>

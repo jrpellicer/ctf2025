@@ -57,6 +57,7 @@ $reto2Resuelto = $false
 $reto3Resuelto = $false
 $reto4Resuelto = $false
 $reto6Resuelto = $false
+$reto7Resuelto = $false
 $reto8Resuelto = $false
 while ($true) {
 # ---------------------------------------------------------
@@ -130,6 +131,22 @@ while ($true) {
         if ($usuario -and (Get-ADUser $usuario -Properties MemberOf).MemberOf -contains (Get-ADGroup "Admins. del dominio").DistinguishedName) {
             Resolver-Reto -equipo $equipo -NumeroReto 6 -Identificador "5C"
             $reto6Resuelto = $true
+        }
+    }
+
+# ---------------------------------------------------------
+# Reto 7. Comprobar que rol de Espacio de Nombres DFS está instalado
+# ---------------------------------------------------------
+
+    if (-not $reto7Resuelto) {
+
+        # Obtener si esta instalado el rol de Espacio de Nombres DFS
+        $dfsInstalado = (Get-WindowsFeature FS-DFS-Namespace).Installed
+
+        # Comprobar si esta instalado el rol de Espacio de Nombres DFS
+        if ($dfsInstalado -eq $true) {
+            Resolver-Reto -equipo $equipo -NumeroReto 7 -Identificador "23"
+            $reto7Resuelto = $true
         }
     }
 

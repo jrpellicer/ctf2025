@@ -13,7 +13,7 @@ $competiciones = $pdo->query("SELECT * FROM competiciones")->fetchAll();
 <body>
     <?php include 'menu.php'; ?>
     <div class="container">
-        <h1>Competición de Equipos</h1>
+        <h1>Capture The Flag Windows Server</h1>
 
         <form id="formComp">
             <label for="comp">Competición:</label>

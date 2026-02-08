@@ -172,3 +172,13 @@ Hemos detectado que el Servidor WSUS de la empresa no está funcionando correcta
 Es posible que los equipos cliente no estén intentando descargarse las actualizaciones desde el servidor WSUS correcto. Investiga y resuelve el problema para asegurar que las actualizaciones se distribuyan correctamente a todos los equipos de la red.
 '
 WHERE codigo_hex = 'B3';
+
+--
+
+UPDATE retos
+SET descripcion = '
+Deseamos que nuestro servidor de archivos organice carpetas de varios servidores en una ruta única, permitiendo acceso centralizado y alta disponibilidad.
+
+Para ello deberás instalar el rol necesario en el servidor.
+'
+WHERE codigo_hex = '23';
