@@ -61,13 +61,13 @@ CREATE TABLE completados (
 INSERT INTO retos (codigo_hex, nombre, puntos) VALUES
     ('FA', 'Únete al Dominio', 900),
     ('17', 'No puedo trabajar', 300),
-    ('DD', 'El nuevo de la oficina', 600),
+    ('DD', 'El nuevo de la oficina', 500),
     ('AD', 'Amplíame el disco que me quedo corto', 1800),
-    ('11', '¿Por qué se ha apagado el equipo?', 300),
+    ('11', '¿Por qué se ha apagado el equipo?', 400),
     ('5C', 'Un gran poder conlleva una gran responsabilidad', 400),
-    ('23', 'Juegos de rol', 1900),
+    ('23', 'Juegos de rol', 900),
     ('AF', '¿Dónde está mi archivo?', 800),
-    ('45', 'Un ruso está intentando hackearnos', 300),
+    ('45', 'Un ruso está intentando hackearnos', 900),
     ('B3', 'No encuentro el Servidor WSUS', 1200);
 
 -- Actualizar descripción del reto
@@ -177,8 +177,8 @@ WHERE codigo_hex = 'B3';
 
 UPDATE retos
 SET descripcion = '
-Deseamos que nuestro servidor de archivos organice carpetas de varios servidores en una ruta única, permitiendo acceso centralizado y alta disponibilidad.
+Deseamos que nuestro servidor de archivos organice carpetas de varios servidores en una ruta única de red UNC, permitiendo acceso centralizado y alta disponibilidad.
 
-Para ello deberás instalar el rol necesario en el servidor.
+Para ello deberás instalar el rol necesario en el servidor que nos permita hacer esto.
 '
 WHERE codigo_hex = '23';
