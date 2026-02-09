@@ -13,6 +13,7 @@ $desktopPath = "$env:USERPROFILE\Desktop"
 # Crear el fichero equipo.txt
 $archivo = Join-Path $desktopPath "equipo.txt"
 Set-Content -Path $archivo -Value $equipo
+Set-Content -Path "C:\equipo.txt" -Value $equipo
 
 # ---------------------------------------------------------
 # Reto 1 (No hace falta hacer nada)

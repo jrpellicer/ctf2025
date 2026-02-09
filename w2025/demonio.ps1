@@ -46,9 +46,15 @@ function Resolver-Reto {
     Add-Content -Path $archivoReto -Value "Código del reto ${NumeroReto}: $codigo"
 }
 
+# -------------------------------------------------------
 # Obtener código de equipo
+# -------------------------------------------------------
+# Esperamos 15 segundos para dar tiempo que se genere el equipo
+Start-Sleep -Seconds 15
+
 $desktopPath = "$env:USERPROFILE\Desktop"
-$archivoEquipo = Join-Path $desktopPath "equipo.txt"
+#$archivoEquipo = Join-Path $desktopPath "equipo.txt"
+$archivoEquipo = "C:\equipo.txt"
 $equipo = Get-Content -Path $archivoEquipo
 $archivoReto = Join-Path $desktopPath "retos.txt"
 
@@ -168,5 +174,5 @@ while ($true) {
     }
 
 # ---------------------------------------------------------
-    Start-Sleep -Seconds 10
+    Start-Sleep -Seconds 5
 }
