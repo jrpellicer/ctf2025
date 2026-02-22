@@ -131,10 +131,14 @@ while ($true) {
     if (-not $reto6Resuelto) {
 
         # Obtener el usuario Miguel Torres
-        $usuario = Get-ADUser -Identity "Miguel Torres" -ErrorAction SilentlyContinue
+        $usuario = Get-ADUser -Identity "mtorres" -ErrorAction SilentlyContinue
+
+        # Obtener el ID del grupo de administradores del dominio
+        $domainSID = (Get-ADDomain).DomainSID.Value
+        $grupoAdmin = Get-ADGroup -Identity "$domainSID-512"
 
         # Comprobar si pertenece al grupo de administradores del dominio
-        if ($usuario -and (Get-ADUser $usuario -Properties MemberOf).MemberOf -contains (Get-ADGroup "Admins. del dominio").DistinguishedName) {
+        if ($usuario -and ($usuario.MemberOf -contains $grupoAdmin.DistinguishedName)) {
             Resolver-Reto -equipo $equipo -NumeroReto 6 -Identificador "5C"
             $reto6Resuelto = $true
         }
@@ -167,7 +171,9 @@ while ($true) {
         $tamano=1234 # Tamaño en bytes esperado
         $archivoRestaurado = Join-Path $ruta $archivo
 
-        if (Test-Path $archivoRestaurado -and (Get-Item $archivoRestaurado).Length -eq $tamano) {
+        $item = Get-Item $archivoRestaurado -ErrorAction SilentlyContinue
+
+        if ($item -and $item.Length -eq $tamano) {
             Resolver-Reto -equipo $equipo -NumeroReto 8 -Identificador "AF"
             $reto8Resuelto = $true
         }
