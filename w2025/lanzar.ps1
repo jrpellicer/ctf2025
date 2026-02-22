@@ -92,27 +92,27 @@ $WUPath = "HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate"
 $AUPath = "$WUPath\AU"
 
 # Configurar servidor WSUS
-Set-GPRegistryValue -Name $GpoName -Domain $Domain `
+Set-GPRegistryValue -Name $GpoName `
     -Key $WUPath `
     -ValueName "WUServer" `
     -Type String `
     -Value $WsusServer
 
-Set-GPRegistryValue -Name $GpoName -Domain $Domain `
+Set-GPRegistryValue -Name $GpoName `
     -Key $WUPath `
     -ValueName "WUStatusServer" `
     -Type String `
     -Value $WsusServer
 
 # Habilitar uso de WSUS
-Set-GPRegistryValue -Name $GpoName -Domain $Domain `
+Set-GPRegistryValue -Name $GpoName `
     -Key $AUPath `
     -ValueName "UseWUServer" `
     -Type DWord `
     -Value 1
 
 # Habilitar Actualizaciones Automáticas (NoAutoUpdate = 0)
-Set-GPRegistryValue -Name $GpoName -Domain $Domain `
+Set-GPRegistryValue -Name $GpoName `
     -Key $AUPath `
     -ValueName "NoAutoUpdate" `
     -Type DWord `
