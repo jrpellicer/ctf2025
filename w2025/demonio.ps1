@@ -166,8 +166,8 @@ while ($true) {
 # ---------------------------------------------------------
 
     if (-not $reto8Resuelto) {
-        $archivo = "contrato_9831.txt"
-        $ruta = "C:\Archivos\Contratos"
+        $archivo = "Con_9831.docx"
+        $ruta = "C:\DatosEmpresa\Ventas\Contratos"
         $tamano=1234 # Tamaño en bytes esperado
         $archivoRestaurado = Join-Path $ruta $archivo
 
