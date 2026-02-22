@@ -65,14 +65,14 @@ Invoke-Command -ComputerName localhost -Credential $cred -ScriptBlock { hostname
 $Identificador = "B3"
 $codigo = "{0:X8}" -f ((($v=[Convert]::ToUInt32("$equipo$Identificador",16)) -shl 11 -bor ($v -shr 21)) -band 0xFFFFFFFF)
 
-# Configurar el servidor WSUS incorrecto
+# Configurar el servidor WSUS
 Import-Module GroupPolicy
 
 # Nombre de la GPO
 $GpoName = "WSUS"
 
 # URL del servidor WSUS
-$WsusServer = "http://$codigo:8530"
+$WsusServer = "http://$codigo.asir.iescamp.es:8530"
 
 # Obtener el dominio
 $Domain = (Get-ADDomain).DistinguishedName
@@ -92,24 +92,31 @@ $WUPath = "HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate"
 $AUPath = "$WUPath\AU"
 
 # Configurar servidor WSUS
-Set-GPRegistryValue -Name $GpoName `
+Set-GPRegistryValue -Name $GpoName -Domain $Domain `
     -Key $WUPath `
     -ValueName "WUServer" `
     -Type String `
     -Value $WsusServer
 
-Set-GPRegistryValue -Name $GpoName `
+Set-GPRegistryValue -Name $GpoName -Domain $Domain `
     -Key $WUPath `
     -ValueName "WUStatusServer" `
     -Type String `
     -Value $WsusServer
 
 # Habilitar uso de WSUS
-Set-GPRegistryValue -Name $GpoName `
+Set-GPRegistryValue -Name $GpoName -Domain $Domain `
     -Key $AUPath `
     -ValueName "UseWUServer" `
     -Type DWord `
     -Value 1
+
+# Habilitar Actualizaciones Automáticas (NoAutoUpdate = 0)
+Set-GPRegistryValue -Name $GpoName -Domain $Domain `
+    -Key $AUPath `
+    -ValueName "NoAutoUpdate" `
+    -Type DWord `
+    -Value 0
 
 # ---------------------------------------------------------
 # Informamos del nombre de equipo generado mediante notificación
